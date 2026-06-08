@@ -1,0 +1,83 @@
+.footer {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  padding: 79px 70px 20px;
+  /* position: sticky; */
+  bottom: 0;
+  background-color: #202020;
+}
+
+.footer__title {
+  color: #8b8b8b;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #424242;
+  text-align: center;
+}
+
+.footer__container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.footer__box {
+  display: flex;
+  gap: 20px;
+}
+
+.footer__text {
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.footer__link {
+  text-decoration: none;
+}
+
+/* ЭФФЕКТЫ ЭФФЕКТЫ ЭФФЕКТЫ */
+.footer__link:hover {
+  opacity: 70%;
+}
+
+/*ШИРИНА ЭКРАНА 768px*/
+@media screen and (max-width: 1024px) {
+  .footer {
+    padding: 79px 30px 20px;
+  }
+}
+
+/*ШИРИНА ЭКРАНА 320px*/
+@media screen and (max-width: 540px) {
+  .footer {
+    padding: 79px 10px 20px;
+  }
+  .footer__title {
+    font-size: 12px;
+    line-height: 15px;
+  }
+  /*бокс и год*/
+  .footer__container {
+    flex-direction: column-reverse;
+    align-items: center;
+    margin-top: 30px;
+    gap: 30px;
+  }
+  /*Яндекс практикум и гитхаб*/
+  .footer__box {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .footer__text {
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .footer__text_color_other {
+    color: #8b8b8b;
+  }
+}

@@ -1,0 +1,43 @@
+.navigation {
+  margin-left: 60px;
+}
+
+.navigation__authorized-items {
+  gap: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.navigation__link {
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  text-decoration: none;
+}
+
+.navigation__link_active {
+  font-weight: 500;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #fff;
+}
+
+/* ЭФФЕКТЫ ЭФФЕКТЫ ЭФФЕКТЫ */
+.navigation__link:hover {
+  opacity: 70%;
+}
+
+/* ШИРИНА ЭКРАНА 768px */
+@media screen and (max-width: 1024px) {
+  .navigation__link {
+    font-size: 22px;
+    line-height: 27px;
+  }
+}
+
+/* ШИРИНА ЭКРАНА 320px */
+@media screen and (max-width: 540px) {
+  .navigation__link_active {
+    border-bottom: 2px solid #fff;
+  }
+}

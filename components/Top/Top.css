@@ -1,0 +1,48 @@
+.top {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  padding: 70px 0 40px;
+  text-align: left;
+  width: 396px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.top__logo {
+  display: block;
+  width: 38px;
+  height: 38px;
+  background-image: url("../../images/logo.svg");
+}
+
+.top__title {
+  margin: 40px 0 0;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+/* ЭФФЕКТЫ ЭФФЕКТЫ ЭФФЕКТЫ */
+.top__logo:hover {
+  opacity: 70%;
+}
+
+/*ШИРИНА ЭКРАНА 768px*/
+@media screen and (max-width: 1024px) {
+  .top {
+    padding: 232px 0 40px;
+  }
+}
+
+/*ШИРИНА ЭКРАНА 320px*/
+@media screen and (max-width: 540px) {
+  .top {
+    padding: 56px 0 80px;
+    max-width: 260px;
+    align-items: center;
+  }
+  .top__title {
+    margin: 50px 0 0;
+  }
+}

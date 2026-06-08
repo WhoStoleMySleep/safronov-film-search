@@ -1,0 +1,80 @@
+/*Контейнер с формой и чекбоксом */
+.search-form {
+  background-color: #202020;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  display: flex;
+  padding: 80px 70px 0;
+  flex-direction: column;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+/*бокс с поисковой строкой и кнопкой поиск*/
+.search-form__box {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+}
+
+.search-form__input {
+  box-sizing: border-box;
+  background-color: #2f2f2f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  color: #8b8b8b;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  border: none;
+  border-radius: 8px;
+  padding: 16px 20px;
+  flex-basis: 100%;
+  cursor: pointer;
+}
+
+.search-form__button {
+  background-image: url("../../images/search-form__button.svg");
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 5.5px;
+  cursor: pointer;
+}
+
+/* Нужно ввести включевое слово */
+.search-form__error {
+  position: absolute;
+  left: 50%;
+  top: 145px;
+  transform: translate(-50%, -50%);
+  color: #ee3465;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+/* ЭФФЕКТЫ ЭФФЕКТЫ ЭФФЕКТЫ */
+.search-form__button:hover {
+  opacity: 80%;
+}
+
+/*ШИРИНА ЭКРАНА 768px*/
+@media screen and (max-width: 1024px) {
+  .search-form {
+    padding: 80px 30px 0;
+  }
+}
+
+/*ШИРИНА ЭКРАНА 320px*/
+@media screen and (max-width: 540px) {
+  .search-form {
+    padding: 80px 14px 0;
+  }
+  .search-form__input {
+    padding: 13px;
+    max-width: calc(100% - 44px - 10px - 2 * 14px + 2 * 13px);
+  }
+}

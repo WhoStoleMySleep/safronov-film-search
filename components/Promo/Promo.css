@@ -1,0 +1,141 @@
+.promo {
+  background-color: #202020;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  padding: 110px 70px;
+}
+
+.promo__title {
+  width: 100%;
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+  letter-spacing: -0.04em;
+  padding: 0 0 23px;
+  border-bottom: 1px solid #dadada;
+}
+
+.promo__boxs {
+  margin: 70px 0 0;
+  display: flex;
+  gap: 52px;
+}
+
+.promo__box {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.promo__text {
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+}
+
+.promo__paragraph {
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.promo__container {
+  margin: 110px 0 0;
+  display: grid;
+  gap: 14px 0;
+  text-align: center;
+  grid-template-columns: 1fr 4fr;
+}
+
+.promo__time-dev {
+  background-color: #303030;
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 9px 0;
+}
+
+.promo__time-dev_color_main {
+  background-color: #3ddc84;
+  color: #000;
+}
+
+.promo__text-dev {
+  color: #8b8b8b;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+/*ШИРИНА ЭКРАНА 768px*/
+@media screen and (max-width: 1024px) {
+  .promo {
+    padding: 90px 50px;
+  }
+  .promo__boxs {
+    gap: 38px;
+  }
+  .promo__box {
+    gap: 22px;
+  }
+
+  .promo__paragraph {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .promo__container {
+    margin: 93px 0 0;
+    grid-template-columns: 1fr 3.77fr;
+  }
+  .promo__text-dev {
+    font-weight: 400;
+  }
+}
+
+/*ШИРИНА ЭКРАНА 320px*/
+@media screen and (max-width: 540px) {
+  .promo {
+    padding: 70px 18px;
+  }
+  .promo__title {
+    font-size: 18px;
+    line-height: 22px;
+    padding: 0 0 28px;
+  }
+  .promo__boxs {
+    margin: 60px 0 0;
+    flex-direction: column;
+    gap: 56px;
+  }
+  .promo__box {
+    gap: 16px;
+  }
+  .promo__text {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .promo__paragraph {
+    font-size: 11px;
+    line-height: 16px;
+  }
+  .promo__container {
+    margin: 60px 0 0;
+    gap: 10px 0;
+    grid-template-columns: 1fr 1.84fr;
+  }
+  .promo__time-dev {
+    font-size: 11px;
+    line-height: 13px;
+    padding: 11px 0;
+  }
+  .promo__text-dev {
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+  }
+}

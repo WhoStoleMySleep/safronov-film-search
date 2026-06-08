@@ -1,0 +1,132 @@
+/*ШИРИНА ЭКРАНА 768px*/
+.popup {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s linear;
+}
+
+/*Открыть поп ап*/
+.popup_opened {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup__container {
+  position: relative;
+  top: 0;
+  right: 0;
+  height: 100%;
+  align-self: end;
+  width: 520px;
+  background-color: #202020;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  padding: 159px 10px 90px;
+  box-sizing: border-box;
+  cursor: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.popup__box {
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+}
+
+.popup__link {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  padding-bottom: 0px;
+  text-decoration: none;
+  width: min-content;
+  white-space: nowrap;
+  align-self: center;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+}
+
+.popup__link_active {
+  padding-bottom: 4px;
+  border-bottom: 2px solid #fff;
+}
+
+.popup__link-profile {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  background-color: #313131;
+  text-decoration: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+}
+
+/*Крестик*/
+.popup__button-close {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: #fff;
+  transform: translate(-22px, 22px);
+}
+
+.popup__close-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.popup__close-icon:hover {
+  opacity: 0.6;
+}
+
+/* ЭФФЕКТЫ ЭФФЕКТЫ ЭФФЕКТЫ */
+.popup__link:hover {
+  opacity: 70%;
+}
+
+.popup__link-profile:hover {
+  opacity: 70%;
+}
+
+.popup__close-icon {
+  opacity: 70%;
+}
+
+/*ШИРИНА ЭКРАНА 320px*/
+@media screen and (max-width: 540px) {
+  .popup__container {
+    width: 100%;
+    padding: 144px 10px 46px;
+  }
+  .popup__box {
+    gap: 16px;
+  }
+  .popup__link {
+    padding-bottom: 7px;
+  }
+  .popup__link_active {
+    padding-bottom: 7px;
+  }
+  .popup__button-close {
+    transform: translate(-13px, 13px);
+  }
+}

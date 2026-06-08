@@ -1,0 +1,66 @@
+/*section*/
+.nav-tab {
+  background-color: #272727;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  margin: 0 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 151px 0 30px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.nav-tab__navigation-items {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.nav-tab__link {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  background-color: #303030;
+  border-radius: 10px;
+  display: inline-block;
+  width: 96px;
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* ЭФФЕКТЫ ЭФФЕКТЫ ЭФФЕКТЫ */
+.nav-tab__link:hover {
+  opacity: 70%;
+}
+
+/*ШИРИНА ЭКРАНА 768px*/
+@media screen and (max-width: 1024px) {
+  .nav-tab {
+    margin: 0 20px;
+    padding: 314px 0 30px;
+  }
+  .nav-tab__link {
+    padding: 10px 0;
+  }
+}
+
+/*ШИРИНА ЭКРАНА 320px*/
+@media screen and (max-width: 540px) {
+  .nav-tab {
+    margin: 0 14px;
+    padding: 212px 0 17px;
+  }
+  .nav-tab__navigation-items {
+    gap: 6px;
+    padding: 0 17px;
+  }
+  .nav-tab__link {
+    padding: 5px 0;
+    width: 82px;
+    font-size: 10px;
+  }
+}

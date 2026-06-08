@@ -1,0 +1,47 @@
+.about-project {
+  background-color: #272727;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  margin: 20px 40px 0;
+  padding: 160px 0 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.about-project__title {
+  max-width: 730px;
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  text-align: center;
+  letter-spacing: -0.04em;
+  margin: 0 auto;
+}
+
+/*ШИРИНА ЭКРАНА 768px*/
+@media screen and (max-width: 1024px) {
+  .about-project {
+    margin: 20px 20px 0;
+    padding: 350px 0 0;
+  }
+
+  .about-project__title {
+    max-width: 680px;
+    font-size: 40px;
+    line-height: 52px;
+  }
+}
+
+/*ШИРИНА ЭКРАНА 320px*/
+@media screen and (max-width: 540px) {
+  .about-project {
+    margin: 14px 14px 0;
+    padding: 220px 0 0;
+  }
+
+  .about-project__title {
+    max-width: 292px;
+    font-size: 29px;
+    line-height: 37px;
+  }
+}

@@ -1,0 +1,75 @@
+.other-pages {
+  background-color: #202020;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 246px 0 60px;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.other-pages__box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.other-pages__title {
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 140px;
+  line-height: 169px;
+}
+
+.other-pages__text {
+  color: #ffffff;
+  margin: 5px 0 0;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.other-pages__button {
+  color: #4285f4;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  background-color: #202020;
+  border: none;
+  cursor: pointer;
+}
+
+/* ЭФФЕКТЫ ЭФФЕКТЫ ЭФФЕКТЫ */
+.other-pages__button:hover {
+  opacity: 70%;
+}
+
+/*ШИРИНА ЭКРАНА 768px*/
+@media screen and (max-width: 1024px) {
+  .other-pages {
+    padding: 408px 0 222px;
+  }
+}
+
+/*ШИРИНА ЭКРАНА 320px*/
+@media screen and (max-width: 540px) {
+  .other-pages {
+    padding: 329px 0 30px;
+  }
+  .other-pages__title {
+    font-size: 80px;
+    line-height: 97px;
+  }
+  .other-pages__text {
+    margin: 10px 0 0;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .other-pages__button {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
