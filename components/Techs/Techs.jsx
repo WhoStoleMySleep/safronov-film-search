@@ -10,7 +10,7 @@ export default function Techs() {
         В группе ИСиП-22 были освоены технологии, применённые в дипломном проекте.
       </p>
       <ul className="techs__items">
-        {['HTML', 'CSS', 'JS', 'React', 'Git', 'Express.js', 'mongoDB'].map((tech) => (
+        {['HTML', 'CSS', 'JS', 'React', 'Next.js', 'Git', 'mongoDB'].map((tech) => (
           <li className="techs__item" key={tech}>
             <p className="techs__tech">{tech}</p>
           </li>

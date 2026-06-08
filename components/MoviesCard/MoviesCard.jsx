@@ -1,10 +1,15 @@
 'use client';
 import React from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import imageSavedMovies from '@/images/movies-card__image-saved-movies.svg';
 import imageDeleteMovies from '@/images/movies-card__button-delete.svg';
 import './MoviesCard.css';
+
+async function openRutube(name) {
+  const res = await fetch(`/api/rutube?q=${encodeURIComponent(name + ' трейлер')}`);
+  const data = await res.json();
+  window.open(data.url ?? `https://rutube.ru/search/?query=${encodeURIComponent(name)}`, '_blank');
+}
 
 export default function MoviesCard({ onDelete, thumbnail, name, time, trailerLink, onSave, movie, savedMovieList }) {
   const hours = Math.floor(time / 60);
@@ -14,9 +19,9 @@ export default function MoviesCard({ onDelete, thumbnail, name, time, trailerLin
 
   return (
     <li className="movies-card">
-      <Link href={trailerLink} className="movies-card__trailer-link" target="_blank" rel="noopener noreferrer">
+      <button type="button" className="movies-card__trailer-link" onClick={() => openRutube(name)}>
         <img className="movies-card__image" src={thumbnail} alt={name} />
-      </Link>
+      </button>
       {pathname === '/saved-movies' && (
         <button type="button" className="movies-card__button-delete" onClick={() => onDelete(movie)}>
           <img className="movies-card__image-delete" src={imageDeleteMovies.src} alt="Удалить" />

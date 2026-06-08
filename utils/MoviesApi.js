@@ -25,7 +25,7 @@ class MoviesApi {
 }
 
 const moviesApi = new MoviesApi({
-  url: " https://api.nomoreparties.co/beatfilm-movies",
+  url: '/api/beatfilm',
 });
 
 export default moviesApi;

@@ -16,6 +16,10 @@
 .movies-card__trailer-link {
   width: 100%;
   display: block;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 
 .movies-card__box {
