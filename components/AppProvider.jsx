@@ -158,9 +158,19 @@ export default function AppProvider({ children }) {
   async function getMovies(filterCheckbox) {
     setIsLoading(true);
     try {
-      const res = await fetch(`/api/rutube?q=${encodeURIComponent(searchFormValue)}&pageSize=20`);
+      const res = await fetch(
+        `https://rutube.ru/api/search/video/?query=${encodeURIComponent(searchFormValue)}&format=json&page=1&pageSize=20`
+      );
       const data = await res.json();
-      const all = data.results ?? [];
+      const raw = data.results ?? [];
+      const all = raw.map((v) => ({
+        id: String(v.id ?? v.video_url?.split('/').filter(Boolean).pop() ?? ''),
+        title: v.title ?? '',
+        thumbnail: v.thumbnail_url ?? '',
+        authorName: v.author?.name ?? '',
+        duration: Math.round((v.duration ?? 0) / 60),
+        url: v.video_url ?? '',
+      }));
       const result = filterCheckbox ? all.filter((m) => m.duration < 40) : all;
       if (result.length === 0) { setArrMovies(false); setMovies([]); }
       else { setMovies(result); setArrMovies(true); }
