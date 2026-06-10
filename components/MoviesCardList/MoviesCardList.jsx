@@ -4,6 +4,13 @@ import { usePathname } from 'next/navigation';
 import MoviesCard from '@/components/MoviesCard/MoviesCard';
 import './MoviesCardList.css';
 
+function proxyImg(url) {
+  if (!url) return '';
+  return url.includes('kinopoiskapiunofficial.tech')
+    ? `/api/poster?url=${encodeURIComponent(url)}`
+    : url;
+}
+
 export default function MoviesCardList({ onDelete, movieList, savedMovieList, savedMoviesFilter, buttonAddMovies, setButtonAddMovies, onSave, arrMovies, arrSavedMovies, errorTextMovies, errorTextSavedMovies }) {
   const [sumMovies, setSumMovies] = React.useState(0);
   const [addedMovies, setAddedMovies] = React.useState(3);
@@ -36,7 +43,7 @@ export default function MoviesCardList({ onDelete, movieList, savedMovieList, sa
           <ul className="movies-card-list__items">
             {movieList.slice(0, sumMovies).map((movie) => (
               <MoviesCard movie={movie} onDelete={onDelete} key={movie.id} name={movie.title}
-                thumbnail={movie.thumbnail} time={movie.duration} videoUrl={movie.url}
+                thumbnail={proxyImg(movie.thumbnail)} time={movie.duration} videoUrl={movie.url}
                 onSave={onSave} savedMovieList={savedMovieList} />
             ))}
           </ul>
@@ -51,8 +58,8 @@ export default function MoviesCardList({ onDelete, movieList, savedMovieList, sa
           <ul className="movies-card-list__items">
             {savedMoviesFilter.slice(0, sumMovies).map((movie) => (
               <MoviesCard movie={movie} onDelete={onDelete} key={movie._id} name={movie.title}
-                thumbnail={movie.thumbnail} time={movie.duration}
-                videoUrl={`https://rutube.ru/video/${movie.videoId}/`}
+                thumbnail={proxyImg(movie.thumbnail)} time={movie.duration}
+                videoUrl={`https://www.kinopoisk.ru/film/${movie.videoId}/`}
                 onSave={onSave} savedMovieList={savedMovieList} />
             ))}
           </ul>
