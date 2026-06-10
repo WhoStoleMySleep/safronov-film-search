@@ -6,7 +6,6 @@ import Header from '@/components/Header/Header';
 import PopupMenu from '@/components/PopupMenu/PopupMenu';
 import * as auth from '@/utils/auth';
 import mainApi from '@/utils/MainApi';
-import moviesApi from '@/utils/MoviesApi';
 
 export default function AppProvider({ children }) {
   const router = useRouter();
@@ -38,13 +37,8 @@ export default function AppProvider({ children }) {
 
   React.useEffect(() => {
     if (pathname === '/movies') {
-      if (localStorage.getItem('filter-request-text')) {
-        setSearchFormValue(localStorage.getItem('filter-request-text'));
-        setMovies(JSON.parse(localStorage.getItem('filter-movies')));
-        setCheckbox(JSON.parse(localStorage.getItem('filter-checkbox')));
-      } else {
-        setSearchFormValue('');
-      }
+      setSearchFormValue('');
+      setMovies([]);
     } else if (pathname === '/saved-movies') {
       setSearchFormValue('');
       setSavedMoviesFilter(savedMovies);
@@ -57,25 +51,6 @@ export default function AppProvider({ children }) {
     setInputChange({ name: false, email: false });
     mainApi.getUserInfo().then(setCurrentUser).catch(console.error);
     getSavedMovies();
-    if (pathname === '/movies') {
-      setIsLoading(true);
-      const cached = localStorage.getItem('filter-movies');
-      if (cached) {
-        setMovies(JSON.parse(cached));
-        setSearchFormValue(localStorage.getItem('filter-request-text') ?? '');
-        setArrMovies(true);
-      }
-      setTimeout(() => setIsLoading(false), 500);
-    }
-  }, [loggedIn]);
-
-  React.useEffect(() => {
-    if (!loggedIn || localStorage.getItem('movies')) return;
-    setIsLoading(true);
-    moviesApi.getAllMovies().then((data) => {
-      localStorage.setItem('movies', JSON.stringify(data));
-      setTimeout(() => setIsLoading(false), 500);
-    }).catch(console.error);
   }, [loggedIn]);
 
   React.useEffect(() => { setSavedMoviesFilter(savedMovies); }, [savedMovies]);
@@ -90,7 +65,7 @@ export default function AppProvider({ children }) {
   async function getSavedMovies() {
     setIsLoading(true);
     try {
-      const data = await mainApi.getSavedMovies();
+      const data = await mainApi.getRutubeSaved();
       setSavedMovies(data);
       setSavedMoviesFilter(data);
       setTimeout(() => setArrSavedMovies(true), 500);
@@ -112,7 +87,6 @@ export default function AppProvider({ children }) {
   function handleChangeCheckbox(e) {
     if (!isValidSearch) return;
     const next = !checkbox;
-    localStorage.setItem('filter-checkbox', next);
     setCheckbox(next);
     if (e.target.closest('form').checkValidity()) { setIsValidSearch(true); getMovies(next); }
     else setIsValidSearch(false);
@@ -127,10 +101,6 @@ export default function AppProvider({ children }) {
 
   function handleLogout() {
     localStorage.removeItem('jwt');
-    localStorage.removeItem('filter-movies');
-    localStorage.removeItem('filter-request-text');
-    localStorage.removeItem('filter-checkbox');
-    localStorage.removeItem('movies');
     setLoggedIn(false);
     setSavedMovies([]);
     setSavedMoviesFilter([]);
@@ -181,31 +151,28 @@ export default function AppProvider({ children }) {
     e.preventDefault();
     if (!e.target.checkValidity()) { setIsValidSearch(false); return; }
     setIsValidSearch(true);
-    if (pathname === '/movies') getMovies(localStorage.getItem('filter-checkbox'));
+    if (pathname === '/movies') getMovies(checkbox);
     else if (pathname === '/saved-movies') getSavedMoviesFilter(checkboxSaved);
   }
 
-  function getMovies(filterCheckbox) {
+  async function getMovies(filterCheckbox) {
+    setIsLoading(true);
     try {
-      const all = JSON.parse(localStorage.getItem('movies'));
-      const filtered = all.filter((m) =>
-        m.nameRU.toLowerCase().includes(searchFormValue.toLowerCase()) ||
-        m.nameEN.toLowerCase().includes(searchFormValue.toLowerCase())
-      );
-      const result = filterCheckbox ? filtered.filter((m) => m.duration < 40) : filtered;
-      localStorage.setItem('filter-movies', JSON.stringify(result));
-      localStorage.setItem('filter-request-text', searchFormValue);
+      const res = await fetch(`/api/rutube?q=${encodeURIComponent(searchFormValue)}&pageSize=20`);
+      const data = await res.json();
+      const all = data.results ?? [];
+      const result = filterCheckbox ? all.filter((m) => m.duration < 40) : all;
       if (result.length === 0) { setArrMovies(false); setMovies([]); }
-      else { setMovies(result); setButtonAddMovies(true); setArrMovies(true); }
+      else { setMovies(result); setArrMovies(true); }
     } catch { setErrorTextMovies(true); }
+    setIsLoading(false);
   }
 
   function getSavedMoviesFilter(checked) {
     try {
       setIsLoading(true);
       const filtered = savedMovies.filter((m) =>
-        m.nameRU.toLowerCase().includes(searchFormValue.toLowerCase()) ||
-        m.nameEN.toLowerCase().includes(searchFormValue.toLowerCase())
+        m.title?.toLowerCase().includes(searchFormValue.toLowerCase())
       );
       const result = checked ? filtered.filter((m) => m.duration < 40) : filtered;
       if (result.length === 0) { setArrSavedMovies(false); setSavedMoviesFilter([]); }
@@ -215,12 +182,20 @@ export default function AppProvider({ children }) {
   }
 
   function handleSaveMovies(movie) {
-    mainApi.addMovie(movie).then((data) => setSavedMovies((prev) => [data, ...prev])).catch(console.error);
+    mainApi.saveRutubeVideo({
+      videoId: movie.id,
+      title: movie.title,
+      thumbnail: movie.thumbnail,
+      authorName: movie.authorName ?? '',
+      duration: movie.duration,
+    }).then((data) => setSavedMovies((prev) => [data, ...prev])).catch(console.error);
   }
 
   function handleDeleteMovies(movie) {
-    mainApi.deleteMovie(movie._id).then(() =>
-      setSavedMovies((prev) => prev.filter((m) => m._id !== movie._id))
+    const entry = savedMovies.find((s) => s._id === movie._id || s.videoId === movie.id);
+    if (!entry) return;
+    mainApi.deleteRutubeVideo(entry._id).then(() =>
+      setSavedMovies((prev) => prev.filter((m) => m._id !== entry._id))
     ).catch(console.error);
   }
 

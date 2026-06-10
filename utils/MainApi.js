@@ -58,6 +58,30 @@ class MainApi {
       headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` },
     });
   }
+
+  getRutubeSaved() {
+    return this._sendRequest('/api/rutube-saved', {
+      headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` },
+    });
+  }
+
+  saveRutubeVideo(video) {
+    return this._sendRequest('/api/rutube-saved', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(video),
+    });
+  }
+
+  deleteRutubeVideo(id) {
+    return this._sendRequest(`/api/rutube-saved/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` },
+    });
+  }
 }
 
 const mainApi = new MainApi();

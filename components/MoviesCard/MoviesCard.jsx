@@ -5,21 +5,15 @@ import imageSavedMovies from '@/images/movies-card__image-saved-movies.svg';
 import imageDeleteMovies from '@/images/movies-card__button-delete.svg';
 import './MoviesCard.css';
 
-async function openRutube(name) {
-  const res = await fetch(`/api/rutube?q=${encodeURIComponent(name + ' трейлер')}`);
-  const data = await res.json();
-  window.open(data.url ?? `https://rutube.ru/search/?query=${encodeURIComponent(name)}`, '_blank');
-}
-
-export default function MoviesCard({ onDelete, thumbnail, name, time, trailerLink, onSave, movie, savedMovieList }) {
+export default function MoviesCard({ onDelete, thumbnail, name, time, videoUrl, onSave, movie, savedMovieList }) {
   const hours = Math.floor(time / 60);
   const minutes = Math.floor(time - hours * 60);
   const pathname = usePathname();
-  const onSaved = savedMovieList.some((savedMovie) => savedMovie.movieId === movie.id);
+  const onSaved = savedMovieList.some((s) => s.videoId === movie.id);
 
   return (
     <li className="movies-card">
-      <button type="button" className="movies-card__trailer-link" onClick={() => openRutube(name)}>
+      <button type="button" className="movies-card__trailer-link" onClick={() => window.open(videoUrl, '_blank')}>
         <img className="movies-card__image" src={thumbnail} alt={name} />
       </button>
       {pathname === '/saved-movies' && (

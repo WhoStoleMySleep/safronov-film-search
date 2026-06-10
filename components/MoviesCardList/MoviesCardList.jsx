@@ -35,9 +35,9 @@ export default function MoviesCardList({ onDelete, movieList, savedMovieList, sa
         ) : (
           <ul className="movies-card-list__items">
             {movieList.slice(0, sumMovies).map((movie) => (
-              <MoviesCard movie={movie} onDelete={onDelete} key={movie.id} name={movie.nameRU}
-                thumbnail={`https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`}
-                time={movie.duration} trailerLink={movie.trailerLink} onSave={onSave} savedMovieList={savedMovieList} />
+              <MoviesCard movie={movie} onDelete={onDelete} key={movie.id} name={movie.title}
+                thumbnail={movie.thumbnail} time={movie.duration} videoUrl={movie.url}
+                onSave={onSave} savedMovieList={savedMovieList} />
             ))}
           </ul>
         )
@@ -50,8 +50,9 @@ export default function MoviesCardList({ onDelete, movieList, savedMovieList, sa
         ) : (
           <ul className="movies-card-list__items">
             {savedMoviesFilter.slice(0, sumMovies).map((movie) => (
-              <MoviesCard movie={movie} onDelete={onDelete} key={movie._id} name={movie.nameRU}
-                thumbnail={movie.thumbnail} time={movie.duration} trailerLink={movie.trailerLink}
+              <MoviesCard movie={movie} onDelete={onDelete} key={movie._id} name={movie.title}
+                thumbnail={movie.thumbnail} time={movie.duration}
+                videoUrl={`https://rutube.ru/video/${movie.videoId}/`}
                 onSave={onSave} savedMovieList={savedMovieList} />
             ))}
           </ul>
