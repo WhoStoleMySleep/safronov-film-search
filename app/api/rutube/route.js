@@ -17,9 +17,17 @@ export async function GET(request) {
 
   try {
     const res = await fetch(
-      `${RUTUBE_SEARCH_URL}?query=${encodeURIComponent(query)}&format=json&page=1&pageSize=${pageSize}`
+      `${RUTUBE_SEARCH_URL}?query=${encodeURIComponent(query)}&format=json&page=1&pageSize=${pageSize}`,
+      {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'application/json',
+          'Accept-Language': 'ru-RU,ru;q=0.9',
+          'Referer': 'https://rutube.ru/',
+        },
+      }
     );
-    if (!res.ok) return NextResponse.json({ message: 'Ошибка Рутуба' }, { status: 502 });
+    if (!res.ok) return NextResponse.json({ message: 'Ошибка Рутуба', status: res.status }, { status: 502 });
     const data = await res.json();
     const raw = data.results ?? [];
     const results = raw.map((v) => ({
