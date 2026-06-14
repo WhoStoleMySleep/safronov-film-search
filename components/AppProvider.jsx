@@ -4,6 +4,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { AppContext, CurrentUserContext } from '@/contexts/AppContext';
 import Header from '@/components/Header/Header';
 import PopupMenu from '@/components/PopupMenu/PopupMenu';
+import SaveFolderModal from '@/components/SaveFolderModal/SaveFolderModal';
 import * as auth from '@/utils/auth';
 import mainApi from '@/utils/MainApi';
 
@@ -32,6 +33,9 @@ export default function AppProvider({ children }) {
   const [checkbox, setCheckbox] = React.useState(false);
   const [formValue, setFormValue] = React.useState({ name: '', email: '', password: '' });
   const [inputChange, setInputChange] = React.useState({ name: false, email: false });
+  const [folders, setFolders] = React.useState([]);
+  const [activeFolderId, setActiveFolderId] = React.useState(null);
+  const [pendingSaveMovie, setPendingSaveMovie] = React.useState(null);
 
   React.useEffect(() => { tokenCheck(); }, []);
 
@@ -43,6 +47,7 @@ export default function AppProvider({ children }) {
       setSearchFormValue('');
       setSavedMoviesFilter(savedMovies);
       setCheckboxSaved(false);
+      setActiveFolderId(null);
     }
   }, [pathname]);
 
@@ -51,6 +56,7 @@ export default function AppProvider({ children }) {
     setInputChange({ name: false, email: false });
     mainApi.getUserInfo().then(setCurrentUser).catch(console.error);
     getSavedMovies();
+    mainApi.getFolders().then(setFolders).catch(console.error);
   }, [loggedIn]);
 
   React.useEffect(() => { setSavedMoviesFilter(savedMovies); }, [savedMovies]);
@@ -108,6 +114,8 @@ export default function AppProvider({ children }) {
     setCurrentUser(null);
     setIsValid(false);
     setCheckbox(false);
+    setFolders([]);
+    setActiveFolderId(null);
     setErrorTextMovies(false);
     setErrorTextSavedMovies(false);
     router.push('/');
@@ -171,23 +179,74 @@ export default function AppProvider({ children }) {
   function getSavedMoviesFilter(checked) {
     try {
       setIsLoading(true);
-      const filtered = savedMovies.filter((m) =>
+      const byFolder = activeFolderId
+        ? savedMovies.filter((m) => m.folderId?.toString() === activeFolderId)
+        : savedMovies;
+      const byText = byFolder.filter((m) =>
         m.title?.toLowerCase().includes(searchFormValue.toLowerCase())
       );
-      const result = checked ? filtered.filter((m) => m.duration < 40) : filtered;
+      const result = checked ? byText.filter((m) => m.duration < 40) : byText;
       if (result.length === 0) { setArrSavedMovies(false); setSavedMoviesFilter([]); }
       else { setSavedMoviesFilter(result); setArrSavedMovies(true); }
       setTimeout(() => setIsLoading(false), 500);
     } catch { setErrorTextSavedMovies(true); }
   }
 
+  function handleFolderSelect(folderId) {
+    setActiveFolderId(folderId);
+    const byFolder = folderId
+      ? savedMovies.filter((m) => m.folderId?.toString() === folderId)
+      : savedMovies;
+    const result = checkboxSaved ? byFolder.filter((m) => m.duration < 40) : byFolder;
+    if (result.length === 0) { setArrSavedMovies(false); setSavedMoviesFilter([]); }
+    else { setSavedMoviesFilter(result); setArrSavedMovies(true); }
+  }
+
+  async function handleCreateFolder(name) {
+    try {
+      const folder = await mainApi.createFolder(name);
+      setFolders((prev) => [...prev, folder]);
+      return folder;
+    } catch (err) { console.error(err); return null; }
+  }
+
+  function handleDeleteFolder(id) {
+    mainApi.deleteFolder(id).then(() => {
+      setFolders((prev) => prev.filter((f) => f._id !== id));
+      setSavedMovies((prev) => prev.map((m) =>
+        m.folderId?.toString() === id ? { ...m, folderId: null } : m
+      ));
+      if (activeFolderId === id) {
+        setActiveFolderId(null);
+        setSavedMoviesFilter(savedMovies);
+        setArrSavedMovies(savedMovies.length > 0);
+      }
+    }).catch(console.error);
+  }
+
+  function handleMoveToFolder(videoId, folderId) {
+    mainApi.moveVideoToFolder(videoId, folderId).then((updated) => {
+      setSavedMovies((prev) => prev.map((m) =>
+        m._id === videoId ? { ...m, folderId: updated.folderId } : m
+      ));
+    }).catch(console.error);
+  }
+
   function handleSaveMovies(movie) {
+    setPendingSaveMovie(movie);
+  }
+
+  function handleConfirmSave(folderId) {
+    if (!pendingSaveMovie) return;
+    const movie = pendingSaveMovie;
+    setPendingSaveMovie(null);
     mainApi.saveRutubeVideo({
       videoId: movie.id,
       title: movie.title,
       thumbnail: movie.thumbnail,
       authorName: movie.authorName ?? '',
       duration: movie.duration,
+      folderId: folderId ?? undefined,
     }).then((data) => setSavedMovies((prev) => [data, ...prev])).catch(console.error);
   }
 
@@ -199,7 +258,16 @@ export default function AppProvider({ children }) {
     ).catch(console.error);
   }
 
-  const movieProps = { isLoading, onDelete: handleDeleteMovies, movieList: movies, savedMovieList: savedMovies, savedMoviesFilter, handleSubmitSearchForm, buttonAddMovies, setButtonAddMovies, onSave: handleSaveMovies, searchBar: searchFormValue, handleChangeInput: handleChangeSearchInput, arrMovies, arrSavedMovies, handleChangeCheckbox, errorTextMovies, errorTextSavedMovies, onCheckedSaved: checkboxSaved, handleChangeCheckboxSaved, isValidSearch };
+  const movieProps = {
+    isLoading, onDelete: handleDeleteMovies, movieList: movies, savedMovieList: savedMovies,
+    savedMoviesFilter, handleSubmitSearchForm, buttonAddMovies, setButtonAddMovies,
+    onSave: handleSaveMovies, searchBar: searchFormValue, handleChangeInput: handleChangeSearchInput,
+    arrMovies, arrSavedMovies, handleChangeCheckbox, errorTextMovies, errorTextSavedMovies,
+    onCheckedSaved: checkboxSaved, handleChangeCheckboxSaved, isValidSearch,
+    folders, activeFolderId, onFolderSelect: handleFolderSelect,
+    onCreateFolder: handleCreateFolder, onDeleteFolder: handleDeleteFolder,
+    onMoveToFolder: handleMoveToFolder,
+  };
 
   const profileProps = { loggedIn, removeJwt: handleLogout, onUpdateUserInfo, isValid, errors, onSubmit: handleSubmitProfile, handleChangeInput, disabledInput, handleDisabledInput: () => { setDisabledInput(false); setIsValid(false); }, formValue, inputChange };
 
@@ -213,6 +281,15 @@ export default function AppProvider({ children }) {
             <Header loggedIn={loggedIn} isOpenPopupMenu={() => setIsPopupMenuOpen(true)} />
             {children}
             <PopupMenu onClose={() => setIsPopupMenuOpen(false)} isOpen={isPopupMenuOpen} />
+            {pendingSaveMovie && (
+              <SaveFolderModal
+                movie={pendingSaveMovie}
+                folders={folders}
+                onConfirm={handleConfirmSave}
+                onClose={() => setPendingSaveMovie(null)}
+                onCreateFolder={handleCreateFolder}
+              />
+            )}
           </div>
         </div>
       </CurrentUserContext.Provider>

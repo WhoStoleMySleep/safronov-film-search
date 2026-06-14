@@ -16,3 +16,19 @@ export async function DELETE(request, { params }) {
   await RutubeVideo.findByIdAndDelete(id);
   return NextResponse.json({ message: 'Удалено' });
 }
+
+export async function PATCH(request, { params }) {
+  const payload = verifyToken(request);
+  if (!payload) return unauthorized();
+  await connectDB();
+  const { id } = await params;
+  const video = await RutubeVideo.findById(id);
+  if (!video) return NextResponse.json({ message: 'Видео не найдено' }, { status: 404 });
+  if (video.owner.toString() !== payload._id.toString()) {
+    return NextResponse.json({ message: 'Нельзя изменить чужое видео' }, { status: 403 });
+  }
+  const { folderId } = await request.json();
+  video.folderId = folderId ?? null;
+  await video.save();
+  return NextResponse.json(video);
+}

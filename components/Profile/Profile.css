@@ -66,11 +66,15 @@
   text-align: right;
   background-color: #202020;
   border: none;
-  white-space: nowrap; /* Отменяем перенос текста */
-  overflow: hidden; /* Обрезаем содержимое */
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
   font-family: "Inter", Arial, Helvetica, sans-serif;
+  transition: color 0.15s;
 }
+
+.profile__input:focus { color: #3ddc84; }
 
 .profile__button {
   margin: 16px 0 0;
@@ -92,7 +96,6 @@
 }
 
 /* ОШИБКИ ОШИБКИ ОШИБКИ */
-/* Сетевые ошибки (при сабмитах) показываем над кнопками-сабмитами */
 .profile__input-error-message-web {
   color: #ff004c;
   font-weight: 400;
@@ -110,17 +113,18 @@
 }
 
 .profile__button-save {
-  margin: 223px 0 0;
-  color: #ffffff;
+  margin: 40px 0 0;
+  color: #000000;
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
-  background-color: #3456f3;
-  border-radius: 3px;
+  background-color: #3ddc84;
+  border-radius: 6px;
   border: none;
   padding: 13px 0;
   text-align: center;
   cursor: pointer;
+  transition: opacity 0.15s;
 }
 
 /* ЭФФЕКТЫ ЭФФЕКТЫ ЭФФЕКТЫ */
@@ -145,6 +149,7 @@
 .profile__button-save_disabled:hover {
   opacity: 1;
 }
+
 /*ШИРИНА ЭКРАНА 768px*/
 @media screen and (max-width: 1024px) {
   .profile {

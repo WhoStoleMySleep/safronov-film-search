@@ -1,0 +1,207 @@
+.folder-tabs {
+  background-color: #202020;
+  padding: 20px 70px 24px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.folder-tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.folder-tabs__item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* ── Tabs ── */
+.folder-tabs__tab {
+  background: transparent;
+  color: #8b8b8b;
+  border: 1px solid #3a3a3a;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.folder-tabs__tab:hover {
+  color: #ffffff;
+  border-color: #606060;
+}
+
+.folder-tabs__tab_active {
+  background: rgba(61, 220, 132, 0.12);
+  color: #3ddc84;
+  border-color: rgba(61, 220, 132, 0.4);
+  font-weight: 500;
+}
+
+/* ── Delete folder ── */
+.folder-tabs__delete {
+  background: none;
+  border: none;
+  color: #505050;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+
+.folder-tabs__delete:hover {
+  color: #ee3465;
+}
+
+/* ── Add folder button ── */
+.folder-tabs__add {
+  background: none;
+  border: 1px solid #3a3a3a;
+  color: #8b8b8b;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.folder-tabs__add:hover {
+  color: #3ddc84;
+  border-color: rgba(61, 220, 132, 0.5);
+  background: rgba(61, 220, 132, 0.08);
+}
+
+/* ── Create form ── */
+.folder-tabs__form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.folder-tabs__input {
+  background: #2f2f2f;
+  border: 1px solid #424242;
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  padding: 7px 12px;
+  outline: none;
+  width: 200px;
+  transition: border-color 0.15s;
+}
+
+.folder-tabs__input::placeholder {
+  color: #555555;
+}
+
+.folder-tabs__input:focus {
+  border-color: #3ddc84;
+}
+
+.folder-tabs__confirm {
+  background: #3ddc84;
+  color: #000000;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.folder-tabs__confirm:hover {
+  opacity: 0.85;
+}
+
+.folder-tabs__cancel {
+  background: none;
+  border: none;
+  color: #8b8b8b;
+  font-size: 13px;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.folder-tabs__cancel:hover {
+  color: #ffffff;
+}
+
+/* ── Inline folder delete confirm ── */
+.folder-tabs__confirm-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: tabConfirmIn 0.12s ease both;
+}
+
+@keyframes tabConfirmIn {
+  from { opacity: 0; transform: scaleX(0.85); }
+  to   { opacity: 1; transform: scaleX(1); }
+}
+
+.folder-tabs__confirm-text {
+  color: #ffffff;
+  font-size: 12px;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  white-space: nowrap;
+}
+
+.folder-tabs__confirm-yes {
+  background: #ee3465;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.folder-tabs__confirm-yes:hover {
+  opacity: 0.85;
+}
+
+.folder-tabs__confirm-no {
+  background: #333333;
+  color: #8b8b8b;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.folder-tabs__confirm-no:hover {
+  color: #ffffff;
+  background: #3a3a3a;
+}
+
+@media screen and (max-width: 1024px) {
+  .folder-tabs { padding: 18px 30px 20px; }
+}
+
+@media screen and (max-width: 540px) {
+  .folder-tabs { padding: 14px 14px 16px; }
+  .folder-tabs__tab { font-size: 12px; padding: 5px 12px; }
+  .folder-tabs__input { width: 140px; font-size: 12px; }
+  .folder-tabs__confirm { font-size: 12px; padding: 7px 12px; }
+}

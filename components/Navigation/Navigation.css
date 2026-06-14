@@ -18,8 +18,9 @@
 
 .navigation__link_active {
   font-weight: 500;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #fff;
+  background-color: #313131;
+  border-radius: 6px;
+  padding: 4px 10px;
 }
 
 /* ЭФФЕКТЫ ЭФФЕКТЫ ЭФФЕКТЫ */

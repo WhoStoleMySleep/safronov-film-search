@@ -11,7 +11,6 @@
   font-size: 25px;
   line-height: 120%;
   text-align: center;
-  /* margin: 0 auto; */
   width: 100%;
 }
 
@@ -35,11 +34,13 @@
   cursor: pointer;
   width: 100%;
   max-width: 320px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 /* ЭФФЕКТЫ ЭФФЕКТЫ ЭФФЕКТЫ */
 .movies-card-list__button:hover {
-  opacity: 80%;
+  border-color: #8b8b8b;
+  background-color: #2a2a2a;
 }
 
 /*ШИРИНА ЭКРАНА 768px*/

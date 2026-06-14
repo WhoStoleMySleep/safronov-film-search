@@ -11,7 +11,7 @@ function proxyImg(url) {
     : url;
 }
 
-export default function MoviesCardList({ onDelete, movieList, savedMovieList, savedMoviesFilter, buttonAddMovies, setButtonAddMovies, onSave, arrMovies, arrSavedMovies, errorTextMovies, errorTextSavedMovies }) {
+export default function MoviesCardList({ onDelete, movieList, savedMovieList, savedMoviesFilter, buttonAddMovies, setButtonAddMovies, onSave, arrMovies, arrSavedMovies, errorTextMovies, errorTextSavedMovies, folders = [], onMoveToFolder }) {
   const [sumMovies, setSumMovies] = React.useState(0);
   const [addedMovies, setAddedMovies] = React.useState(3);
   const pathname = usePathname();
@@ -60,7 +60,8 @@ export default function MoviesCardList({ onDelete, movieList, savedMovieList, sa
               <MoviesCard movie={movie} onDelete={onDelete} key={movie._id} name={movie.title}
                 thumbnail={proxyImg(movie.thumbnail)} time={movie.duration}
                 videoUrl={`https://www.kinopoisk.ru/film/${movie.videoId}/`}
-                onSave={onSave} savedMovieList={savedMovieList} />
+                onSave={onSave} savedMovieList={savedMovieList}
+                folders={folders} onMoveToFolder={onMoveToFolder} />
             ))}
           </ul>
         )

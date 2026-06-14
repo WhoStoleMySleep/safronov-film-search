@@ -47,26 +47,32 @@
   text-align: left;
   background-color: #2f2f2f;
   border-radius: 8px;
-  border: none;
-  white-space: nowrap; /* Отменяем перенос текста */
-  overflow: hidden; /* Обрезаем содержимое */
+  border: 1px solid #3a3a3a;
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
-  padding: 15px;
+  padding: 14px 15px;
   font-family: "Inter", Arial, Helvetica, sans-serif;
+  outline: none;
+  transition: border-color 0.15s;
 }
 
+.register__input::placeholder { color: #555555; }
+.register__input:focus { border-color: #3ddc84; }
+
 .register__button {
-  margin: 91px 0 0;
-  color: #ffffff;
+  margin: 40px 0 0;
+  color: #000000;
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
-  background-color: #4285f4;
-  border-radius: 3px;
+  background-color: #3ddc84;
+  border-radius: 6px;
   border: none;
   padding: 14px 0;
   text-align: center;
   cursor: pointer;
+  transition: opacity 0.15s;
 }
 .register__box {
   width: 100%;
@@ -85,11 +91,12 @@
 
 .register__link {
   display: inline-block;
-  color: #4285f4;
+  color: #3ddc84;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
   text-decoration: none;
+  transition: opacity 0.15s;
 }
 
 /* ОШИБКИ ОШИБКИ ОШИБКИ */
