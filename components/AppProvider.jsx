@@ -210,6 +210,12 @@ export default function AppProvider({ children }) {
     } catch (err) { console.error(err); return null; }
   }
 
+  function handleRenameFolder(id, name) {
+    mainApi.renameFolder(id, name).then((updated) => {
+      setFolders((prev) => prev.map((f) => (f._id === id ? updated : f)));
+    }).catch(console.error);
+  }
+
   function handleDeleteFolder(id) {
     mainApi.deleteFolder(id).then(() => {
       setFolders((prev) => prev.filter((f) => f._id !== id));
@@ -265,7 +271,7 @@ export default function AppProvider({ children }) {
     arrMovies, arrSavedMovies, handleChangeCheckbox, errorTextMovies, errorTextSavedMovies,
     onCheckedSaved: checkboxSaved, handleChangeCheckboxSaved, isValidSearch,
     folders, activeFolderId, onFolderSelect: handleFolderSelect,
-    onCreateFolder: handleCreateFolder, onDeleteFolder: handleDeleteFolder,
+    onCreateFolder: handleCreateFolder, onDeleteFolder: handleDeleteFolder, onRenameFolder: handleRenameFolder,
     onMoveToFolder: handleMoveToFolder,
   };
 

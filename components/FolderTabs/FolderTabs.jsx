@@ -2,22 +2,50 @@
 import React from 'react';
 import './FolderTabs.css';
 
-export default function FolderTabs({ folders, activeFolderId, onFolderSelect, onCreateFolder, onDeleteFolder }) {
+export default function FolderTabs({ folders, activeFolderId, onFolderSelect, onCreateFolder, onDeleteFolder, onRenameFolder }) {
   const [isCreating, setIsCreating] = React.useState(false);
   const [newName, setNewName] = React.useState('');
-  const [confirmId, setConfirmId] = React.useState(null);
+  const [menu, setMenu] = React.useState(null);
+  const [renameId, setRenameId] = React.useState(null);
+  const [renameValue, setRenameValue] = React.useState('');
 
-  function handleSubmit(e) {
+  React.useEffect(() => {
+    if (!menu) return;
+    function handler() { setMenu(null); }
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [menu]);
+
+  function handleContextMenu(e, folder) {
+    e.preventDefault();
+    const x = Math.min(e.clientX, window.innerWidth - 172);
+    const y = Math.min(e.clientY, window.innerHeight - 90);
+    setMenu({ id: folder._id, name: folder.name, x, y });
+  }
+
+  function startRename(folder) {
+    setMenu(null);
+    setRenameId(folder.id);
+    setRenameValue(folder.name);
+  }
+
+  function submitRename(id) {
+    if (renameValue.trim()) onRenameFolder(id, renameValue.trim());
+    setRenameId(null);
+    setRenameValue('');
+  }
+
+  function handleRenameKeyDown(e, id) {
+    if (e.key === 'Enter') submitRename(id);
+    if (e.key === 'Escape') { setRenameId(null); setRenameValue(''); }
+  }
+
+  function handleCreateSubmit(e) {
     e.preventDefault();
     if (!newName.trim()) return;
     onCreateFolder(newName.trim());
     setNewName('');
     setIsCreating(false);
-  }
-
-  function handleConfirmDelete(id) {
-    onDeleteFolder(id);
-    setConfirmId(null);
   }
 
   return (
@@ -31,33 +59,31 @@ export default function FolderTabs({ folders, activeFolderId, onFolderSelect, on
         </button>
         {folders.map((f) => (
           <div key={f._id} className="folder-tabs__item">
-            <button
-              className={`folder-tabs__tab${activeFolderId === f._id ? ' folder-tabs__tab_active' : ''}`}
-              onClick={() => onFolderSelect(f._id)}
-            >
-              {f.name}
-            </button>
-            {confirmId === f._id ? (
-              <div className="folder-tabs__confirm-wrap">
-                <span className="folder-tabs__confirm-text">Удалить?</span>
-                <button type="button" className="folder-tabs__confirm-yes" onClick={() => handleConfirmDelete(f._id)}>Да</button>
-                <button type="button" className="folder-tabs__confirm-no" onClick={() => setConfirmId(null)}>Нет</button>
-              </div>
+            {renameId === f._id ? (
+              <input
+                className="folder-tabs__rename-input"
+                value={renameValue}
+                onChange={(e) => setRenameValue(e.target.value)}
+                onBlur={() => submitRename(f._id)}
+                onKeyDown={(e) => handleRenameKeyDown(e, f._id)}
+                autoFocus
+              />
             ) : (
               <button
-                className="folder-tabs__delete"
-                aria-label="Удалить папку"
-                onClick={() => setConfirmId(f._id)}
+                className={`folder-tabs__tab${activeFolderId === f._id ? ' folder-tabs__tab_active' : ''}`}
+                onClick={() => onFolderSelect(f._id)}
+                onContextMenu={(e) => handleContextMenu(e, f)}
               >
-                ×
+                {f.name}
               </button>
             )}
           </div>
         ))}
         <button className="folder-tabs__add" onClick={() => setIsCreating(true)}>+</button>
       </div>
+
       {isCreating && (
-        <form className="folder-tabs__form" onSubmit={handleSubmit}>
+        <form className="folder-tabs__form" onSubmit={handleCreateSubmit}>
           <input
             className="folder-tabs__input"
             value={newName}
@@ -70,6 +96,26 @@ export default function FolderTabs({ folders, activeFolderId, onFolderSelect, on
             Отмена
           </button>
         </form>
+      )}
+
+      {menu && (
+        <div
+          className="folder-tabs__context-menu"
+          style={{ top: menu.y, left: menu.x }}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          <button type="button" className="folder-tabs__context-item" onClick={() => startRename({ id: menu.id, name: menu.name })}>
+            Переименовать
+          </button>
+          <div className="folder-tabs__context-separator" />
+          <button
+            type="button"
+            className="folder-tabs__context-item folder-tabs__context-item_danger"
+            onClick={() => { onDeleteFolder(menu.id); setMenu(null); }}
+          >
+            Удалить
+          </button>
+        </div>
       )}
     </div>
   );

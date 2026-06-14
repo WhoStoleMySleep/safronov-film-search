@@ -65,6 +65,14 @@ class MainApi {
     });
   }
 
+  renameFolder(id, name) {
+    return this._sendRequest(`/api/folders/${id}`, {
+      method: 'PATCH',
+      headers: this._jsonHeaders(),
+      body: JSON.stringify({ name }),
+    });
+  }
+
   deleteFolder(id) {
     return this._sendRequest(`/api/folders/${id}`, {
       method: 'DELETE',

@@ -143,6 +143,10 @@
   color: #ffffff;
 }
 
+.movies-card__dropdown-item_danger {
+  color: #ee3465;
+}
+
 .movies-card__dropdown-item_danger:hover {
   background: rgba(238, 52, 101, 0.1);
   color: #ee3465;
